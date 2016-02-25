@@ -53,9 +53,12 @@ async.waterfall([
 	},
 	function(callback) {
 		async.forEachOf(articleList, function(val, key, cb) {
-			console.log(val);
+			console.log('vallll',val);
 			async.eachSeries(val, function(item, next) {
+				console.log('item1111',item);
 				read.getArticleDetail(item.URL, function(err, detial) {
+					if(err)
+						debug('获取文章具体内容出错');
 					save.saveArticleDetail(detial, function() {});
 				})
 				next();

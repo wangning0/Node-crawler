@@ -81,12 +81,16 @@ exports.saveArticleList = function(articleList,cb){
 	})
 }
 //存取文章具体内容
-exports.saveArticleDetail = function(articleDetail,cb){
+exports.saveArticleDetail = function(articleDetails,cb){
 	debug('保存文章具体内容到数据库中');
 	var ArticleList = _getModels('articleDetail');
+	if( !articleDetails ){
+		articleDetails.tags = [];
+		articleDetails.content = '';
+	}
 	var articleDetailItem = {
-		'tags': articleDetail.tags,
-		'content': articleDetail.content
+		'tags': articleDetails.tags,
+		'content': articleDetails.content
 	};
 	ArticleList.findOne(articleDetailItem, function(err, doc) {
 		if (err) {

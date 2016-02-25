@@ -66,22 +66,29 @@ exports.getArticleDetail = function(url, cb) {
 	request(url, function(err, res) {
 		debug('获取博客文章内容:%s', url);
 		if (err)
-			cb(err);
-		var $ = cheerio.load(res.body);
-		var tags = [];
+			console.log('连接时间超时');
+		else {
+			var $ = cheerio.load(res.body);
+			var tags = [];
 
-		$('.articalTag .blog_tag h3 a').each(function() {
-			var tag = $(this).text();
-			if (tag) {
-				tags.push(tag);
+			$('.articalTag .blog_tag h3 a').each(function() {
+				var tag = $(this).text();
+				if (tag) {
+					tags.push(tag);
+				};
+			});
+
+			var content = $('.articalContent').html();
+			var a = {
+				tags: tags,
+				content: content
 			};
-		});
+			//console.log('1111aaa', a);
+			cb(null, {
+				tags: tags,
+				content: content
+			});
+		}
 
-		var content = $('.articalContent').html();
-
-		cb(null, {
-			tags: tags,
-			content: content
-		});
 	})
 }
